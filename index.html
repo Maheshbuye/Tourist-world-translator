@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Voice Translator 🌍</title>
+    <style>
+        :root {
+            --primary: #4285f4;
+            --secondary: #34a853;
+            --accent: #ea4335;
+            --light: #f9f9f9;
+            --dark: #202124;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+        }
+        
+        header {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, #ff8a00, #e52e71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: rgba(255,255,255,0.9);
+            padding: 0.8rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        nav a {
+            margin: 0 1rem;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .translator-box {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(to bottom right, white, #f0f4ff);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .language-selector, .country-selector {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            font-size: 1rem;
+            margin: 1rem 0;
+            background-color: #f8f9fa;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .btn-record {
+            background: linear-gradient(to right, #ff5e62, #ff9966);
+        }
+        
+        .country-info {
+            display: none;
+            margin-top: 2rem;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .country-header {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .country-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .country-content {
+            padding: 1rem;
+        }
+        
+        .section-title {
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .attraction, .food-item {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .attraction img, .food-item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .attraction h4, .food-item h4 {
+            margin: 0.5rem 0;
+            color: var(--primary);
+        }
+        
+        .attraction p, .food-item p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        footer {
+            background: linear-gradient(to right, #434343, #000000);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+        
+        .language-count {
+            background: linear-gradient(to right, #ff8a00, #e52e71);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+        
+        .feature-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .feature-item {
+            background: rgba(255,255,255,0.2);
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+        }
+        
+        #output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            min-height: 50px;
+        }
+        
+        .volume-control {
+            margin-top: 1rem;
+            width: 100%;
+        }
+        
+        .volume-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .status {
+            margin: 1rem 0;
+            padding: 0.5rem;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .listening {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>World Voice Translator 🌍</h1>
+        <div class="language-count">🌐 50+ Languages Supported</div>
+    </header>
+    
+    <nav>
+        <a href="#" class="active">Home</a>
+        <a href="#" onclick="showCountryInfo()">Country Info</a>
+        <a href="#" onclick="showTranslator()">Translator</a>
+    </nav>
+    
+    <div class="container">
+        <!-- Translator Section -->
+        <div id="translator-section" class="translator-box">
+            <h2>🎤 Speak and Translate</h2>
+            <p>Choose language and country, then speak to translate</p>
+            
+            <label for="language">Select Language (भाषा चुनें):</label>
+            <select id="language" class="language-selector">
+                <option value="hi">Hindi</option>
+                <option value="en">English</option>
+                <option value="fr">French</option>
+                <option value="es">Spanish</option>
+                <option value="de">German</option>
+                <option value="zh">Chinese</option>
+                <option value="ja">Japanese</option>
+                <option value="ru">Russian</option>
+                <option value="ar">Arabic</option>
+                <option value="ko">Korean</option>
+                <!-- More languages can be added -->
+            </select>
+            
+            <label for="country">Select Country (देश चुनें):</label>
+            <select id="country" class="country-selector">
+                <option value="india">India</option>
+                <option value="france">France</option>
+                <option value="usa">United States</option>
+                <option value="japan">Japan</option>
+                <option value="thailand">Thailand</option>
+                <option value="italy">Italy</option>
+                <option value="spain">Spain</option>
+                <option value="uk">United Kingdom</option>
+                <option value="germany">Germany</option>
+                <option value="brazil">Brazil</option>
+                <option value="canada">Canada</option>
+                <option value="australia">Australia</option>
+                <option value="mexico">Mexico</option>
+                <option value="turkey">Turkey</option>
+                <option value="russia">Russia</option>
+            </select>
+            
+            <button class="btn btn-record" onclick="translateVoice()">🎙️ Speak & Translate</button>
+            <div id="status" class="status"></div>
+            <div id="output">Translation will appear here...</div>
+            
+            <div class="volume-control">
+                <label for="volume" class="volume-label">Speaker Volume:</label>
+                <input type="range" id="volume" min="0" max="1" step="0.1" value="0.8">
+            </div>
+            
+            <div class="feature-list">
+                <div class="feature-item">🗣️ Voice Input</div>
+                <div class="feature-item">🔊 Clear Audio Output</div>
+                <div class="feature-item">🌍 Country Specific</div>
+                <div class="feature-item">⚡ Instant Results</div>
+            </div>
+        </div>
+        
+        <!-- Country Info Section (hidden by default) -->
+        <div id="country-info" class="country-info">
+            <!-- Content will be loaded dynamically -->
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2023 World Voice Translator 🌍 | Speak Any Language, Connect With The World</p>
+        <p>50+ languages supported | Clear voice translation technology</p>
+    </footer>
+
+    <script>
+        // Country data with attractions and foods
+        const countryData = {
+            india: {
+                name: "India 🇮🇳",
+                image: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da",
+                attractions: [
+                    {
+                        name: "Taj Mahal",
+                        image: "https://images.unsplash.com/photo-1564507592333-c60657eea523",
+                        description: "White marble mausoleum in Agra, built by Shah Jahan for his wife Mumtaz Mahal."
+                    },
+                    {
+                        name: "Amber Fort",
+                        image: "https://images.unsplash.com/photo-1582972236019-ea9dfa7a4548",
+                        description: "Magnificent fort palace in Jaipur with stunning architecture and mirror work."
+                    },
+                    {
+                        name: "Kerala Backwaters",
+                        image: "https://images.unsplash.com/photo-1585821569331-f9db331f1333",
+                        description: "Network of brackish lagoons and lakes lying parallel to the Arabian Sea coast."
+                    }
+                ],
+                foods: [
+                    {
+                        name: "Butter Chicken",
+                        image: "https://images.unsplash.com/photo-1630918326543-5048668ee6dc",
+                        description: "Creamy tomato-based curry with tandoori chicken pieces."
+                    },
+                    {
+                        name: "Biryani",
+                        image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc",
+                        description: "Fragrant rice dish cooked with spices and meat or vegetables."
+                    },
+                    {
+                        name: "Masala Dosa",
+                        image: "https://images.unsplash.com/photo-1601050690117-94f5f6fa3bd0",
+                        description: "Crispy rice crepe filled with spiced potato mixture."
+                    }
+                ]
+            },
+            france: {
+                name: "France 🇫🇷",
+                image: "https://images.unsplash.com/photo-1431274172761-fca41d930114",
+                attractions: [
+                    {
+                        name: "Eiffel Tower",
+                        image: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a",
+                        description: "Iconic iron tower in Paris, one of the most recognizable structures in the world."
+                    },
+                    {
+                        name: "Louvre Museum",
+                        image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
+                        description: "World's largest art museum and home to the Mona Lisa."
+                    },
+                    {
+                        name: "Mont Saint-Michel",
+                        image: "https://images.unsplash.com/photo-1503917988258-f87a78e3c995",
+                        description: "Tidal island and mainland commune in Normandy with medieval abbey."
+                    }
+                ],
+                foods: [
+                    {
+                        name: "Croissant",
+                        image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c",
+                        description: "Buttery, flaky pastry that's a French breakfast staple."
+                    },
+                    {
+                        name: "Ratatouille",
+                        image: "https://images.unsplash.com/photo-1547592180-85f173990554",
+                        description: "Traditional Provençal stewed vegetable dish."
+                    },
+                    {
+                        name: "Bouillabaisse",
+                        image: "https://images.unsplash.com/photo-1551504734-5ee1c4a1479b",
+                        description: "Traditional Provençal fish stew originating from Marseille."
+                    }
+                ]
+            },
+            // Other countries would follow the same pattern
+            usa: {
+                name: "United States 🇺🇸",
+                image: "https://images.unsplash.com/photo-1485738422979-f5c462d49f74",
+                attractions: [
+                    {
+                        name: "Statue of Liberty",
+                        image: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29",
+                        description: "Symbol of freedom in New York Harbor, gifted by France."
+                    },
+                    {
+                        name: "Grand Canyon",
+                        image: "https://images.unsplash.com/photo-1510312305653-8ed496efae75",
+                        description: "Massive canyon carved by the Colorado River in Arizona."
+                    },
+                    {
+                        name: "Golden Gate Bridge",
+                        image: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29",
+                        description: "Suspension bridge spanning the Golden Gate strait in San Francisco."
+                    }
+                ],
+                foods: [
+                    {
+                        name: "Hamburger",
+                        image: "https://images.unsplash.com/photo-1559847844-5315695dadae",
+                        description: "Classic American sandwich with a ground beef patty."
+                    },
+                    {
+                        name: "BBQ Ribs",
+                        image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836",
+                        description: "Slow-cooked pork ribs with barbecue sauce."
+                    },
+                    {
+                        name: "Apple Pie",
+                        image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd",
+                        description: "Traditional dessert with flaky crust and spiced apple filling."
+                    }
+                ]
+            },
+            japan: {
+                name: "Japan 🇯🇵",
+                image: "https://images.unsplash.com/photo-1492571350019-22de08371fd3",
+                attractions: [
+                    {
+                        name: "Mount Fuji",
+                        image: "https://images.unsplash.com/photo-1492571350019-22de08371fd3",
+                        description: "Japan's highest mountain and active volcano."
+                    },
+                    {
+                        name: "Golden Pavilion",
+                        image: "https://images.unsplash.com/photo-1542051841857-5f90071e7989",
+                        description: "Zen Buddhist temple in Kyoto covered in gold leaf."
+                    },
+                    {
+                        name: "Tokyo Tower",
+                        image: "https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3",
+                        description: "Communications and observation tower in Tokyo."
+                    }
+                ],
+                foods: [
+                    {
+                        name: "Sushi",
+                        image: "https://images.unsplash.com/photo-1611270633755-9d5c0cb49a25",
+                        description: "Vinegared rice combined with seafood or vegetables."
+                    },
+                    {
+                        name: "Ramen",
+                        image: "https://images.unsplash.com/photo-1559314809-0d155014e29e",
+                        description: "Japanese noodle soup with meat or fish-based broth."
+                    },
+                    {
+                        name: "Tempura",
+                        image: "https://images.unsplash.com/photo-1563612116625-5973b1bffad3",
+                        description: "Deep-fried seafood or vegetables in light batter."
+                    }
+                ]
+            }
+            // More countries can be added here
+        };
+
+        // Show country info
+        function showCountryInfo() {
+            const countrySelect = document.getElementById('country');
+            const selectedCountry = countrySelect.value;
+            const country = countryData[selectedCountry];
+            
+            const countryInfoDiv = document.getElementById('country-info');
+            countryInfoDiv.style.display = 'block';
+            document.getElementById('translator-section').style.display = 'none';
+            
+            // Build country info HTML
+            let html = `
+                <div class="country-header">${country.name}</div>
+                <img src="${country.image}" alt="${country.name}" class="country-image">
+                <div class="country-content">
+                    <h3 class="section-title">Famous Locations</h3>
+            `;
+            
+            // Add attractions
+            country.attractions.forEach(attraction => {
+                html += `
+                    <div class="attraction">
+                        <img src="${attraction.image}" alt="${attraction.name}">
+                        <h4>${attraction.name}</h4>
+                        <p>${attraction.description}</p>
+                    </div>
+                `;
+            });
+            
+            html += `<h3 class="section-title">Famous Foods</h3>`;
+            
+            // Add foods
+            country.foods.forEach(food => {
+                html += `
+                    <div class="food-item">
+                        <img src="${food.image}" alt="${food.name}">
+                        <h4>${food.name}</h4>
+                        <p>${food.description}</p>
+                    </div>
+                `;
+            });
+            
+            html += `</div>`;
+            countryInfoDiv.innerHTML = html;
+            
+            // Update nav
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            document.querySelectorAll('nav a')[1].classList.add('active');
+        }
+        
+        // Show translator
+        function showTranslator() {
+            document.getElementById('country-info').style.display = 'none';
+            document.getElementById('translator-section').style.display = 'block';
+            
+            // Update nav
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            document.querySelectorAll('nav a')[2].classList.add('active');
+        }
+        
+        // Voice translation function
+        function translateVoice() {
+            // Check if speech recognition is available
+            if (!('webkitSpeechRecognition' in window)) {
+                showStatus("Your browser doesn't support speech recognition. Please use Chrome or Edge.", 'error');
+                return;
+            }
+            
+            // Get selected language and country
+            const langSelect = document.getElementById('language');
+            const selectedLang = langSelect.value;
+            
+            // Create speech recognition object
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = selectedLang;
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            
+            // Start recognition
+            recognition.start();
+            showStatus("Listening... Speak now!", 'listening');
+            
+            // On result
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('output').innerText = transcript;
+                showStatus("Translation complete!", 'success');
+                
+                // Speak the translated text in selected language
+                speakText(transcript, selectedLang);
+            };
+            
+            // On error
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error', event.error);
+                showStatus("Error: " + event.error, 'error');
+            };
+        }
+        
+        // Speak text function
+        function speakText(text, lang) {
+            // Check if speech synthesis is available
+            if (!('speechSynthesis' in window)) {
+                showStatus("Your browser doesn't support text-to-speech. Please use Chrome or Edge.", 'error');
+                return;
+            }
+            
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            // Create speech synthesis utterance
+            const utterance = new SpeechSynthesisUtterance();
+            utterance.text = text;
+            utterance.lang = lang;
+            
+            // Set volume from slider
+            const volume = document.getElementById('volume').value;
+            utterance.volume = parseFloat(volume);
+            
+            // Speak
+            window.speechSynthesis.speak(utterance);
+        }
+        
+        // Show status message
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerText = message;
+            statusDiv.className = 'status ' + type;
+        }
+        
+        // Initialize volume control
+        document.getElementById('volume').addEventListener('input', function() {
+            const volume = this.value;
+            // You could provide visual feedback for volume change
+        });
+        
+        // Initialize with translator shown
+        showTranslator();
+    </script>
+</body>
+</html>
